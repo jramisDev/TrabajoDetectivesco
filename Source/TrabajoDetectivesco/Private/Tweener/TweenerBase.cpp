@@ -9,8 +9,10 @@ void UTweenerBase::StartTween(AActor* InTweenActor, const float InInterpTime, co
 	
 	if(InTweenActor)
 	{
-		FTimerManager& TimerManager = InTweenActor->GetWorld()->GetTimerManager();
-		TimerManager.SetTimer(TimerHandle_Tweening, this, &ThisClass::Interp, 1.f/60.f, true);
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10.f, FColor::Blue, InTweenActor->GetName());
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 10.f, FColor::Blue, InTweenActor->GetActorLocation().ToString());
+		//FTimerManager& TimerManager = InTweenActor->GetWorld()->GetTimerManager();
+		//TimerManager.SetTimer(TimerHandle_Tweening, this, &ThisClass::Interp, 1.f/60.f, true);
 	}
 }
 

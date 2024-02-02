@@ -17,7 +17,7 @@ public:
 	// Sets default values for this component's properties
 	UInspectableComponent();
 
-	void AttachActor(const ATrabajoDetectivescoCharacter* InCharacter) const;
+	void AttachActor(ATrabajoDetectivescoCharacter* InCharacter) const;
 	void InspectActor(const FInputActionValue& Value) const;
 
 };

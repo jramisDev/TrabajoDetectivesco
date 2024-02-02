@@ -61,9 +61,6 @@ class ATrabajoDetectivescoCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=InspectView, meta=(AllowPrivateAccess = "true"))
 	class UInputMappingContext* InspectMappingContext;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=InspectView, meta=(AllowPrivateAccess = "true"))
-	bool IsInspecting = false;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=InspectView, meta = (AllowPrivateAccess = "true"))
 	AInspectableActor* InspectableActor;
 
@@ -111,6 +108,8 @@ public:
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+
+	USceneComponent* GetInspectPointComponent() const { return PointToInspect; }
 	
 };
 

@@ -147,7 +147,7 @@ void ATrabajoDetectivescoCharacter::ThrowInspectMode()
 {
 	FHitResult OutHit;
 
-	float RadiusSphere = 50.f;
+	float RadiusSphere = 500.f;
 		
 	FCollisionShape CollisionShape;
 	CollisionShape.SetSphere(RadiusSphere);
@@ -155,26 +155,24 @@ void ATrabajoDetectivescoCharacter::ThrowInspectMode()
 	FCollisionQueryParams QueryParams;
 	QueryParams.AddIgnoredActor(this);
 	QueryParams.bTraceComplex = true;
-					
-	GetWorld()->SweepSingleByChannel(
+
+	GetWorld()->LineTraceSingleByChannel(
 		OutHit,
 		this->GetActorLocation(),
-		this->GetActorLocation() + this->GetActorForwardVector() * 100.f,
-		FQuat::Identity,
+		this->GetActorLocation() + this->GetActorForwardVector() * 500.f,
 		ECC_Visibility,
-		CollisionShape,
 		QueryParams
-	);
+		);
 		
 #if WITH_EDITOR
-	DrawDebugSphere(GetWorld(),
-	                this->GetActorLocation(),
-	                RadiusSphere,
-	                100,
-	                FColor::Blue,
-	                false,
-	                5.f
-	);
+	DrawDebugLine(
+		GetWorld(),
+		this->GetActorLocation(),
+		this->GetActorLocation() + this->GetActorForwardVector() * 500.f,
+		FColor::Red,
+		false,
+		2.f		
+		);
 #endif
 
 	if (OutHit.IsValidBlockingHit())
@@ -182,7 +180,6 @@ void ATrabajoDetectivescoCharacter::ThrowInspectMode()
 		if(UInspectableComponent* InspectableComponent = OutHit.GetActor()->FindComponentByClass<UInspectableComponent>())
 		{
 			InspectableComponent->AttachActor(this);
-			IsInspecting = true;
 			
 			if(AInspectableActor* Insp = Cast<AInspectableActor>(OutHit.GetActor())) InspectableActor = Insp;
 			
@@ -193,13 +190,13 @@ void ATrabajoDetectivescoCharacter::ThrowInspectMode()
 
 void ATrabajoDetectivescoCharacter::RemoveInspectMode()
 {
+	InspectableActor = nullptr;
 	AddMappingContext(InspectMappingContext, DefaultMappingContext);
-	IsInspecting = false;
 }
 
 void ATrabajoDetectivescoCharacter::InspectActor()
 {
-	if(!IsInspecting)
+	if(!InspectableActor)
 	{	
 		ThrowInspectMode();
 	}else
@@ -211,6 +208,8 @@ void ATrabajoDetectivescoCharacter::InspectActor()
 void ATrabajoDetectivescoCharacter::LookItem(const FInputActionValue& Value)
 {
 	const FVector LookAxisVector = Value.Get<FVector>();
+
+	if(!InspectableActor) return;
 
 	if(UInspectableComponent* InspectableComponent = InspectableActor->FindComponentByClass<UInspectableComponent>())
 	{
