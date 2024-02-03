@@ -13,7 +13,8 @@ class TRABAJODETECTIVESCO_API UTweenerBase : public UObject
 	friend class UTweeningComponent;
 
 	AActor* TweenOwner;	
-	FVector From, To;	
+	FVector From, To;
+	bool bIsAttach = true;
 	
 	FTimerHandle TimerHandle_Tweening;
 
@@ -24,5 +25,6 @@ class TRABAJODETECTIVESCO_API UTweenerBase : public UObject
 protected:
 	
 	void StartTween(AActor* InTweenActor, const float InInterpTime, const FVector& InTo);
+	void StartTweenFrom(AActor* InTweenActor, const float InInterpTime, const FVector& InFrom, const FVector& InTo);
 	void Interp();
 };

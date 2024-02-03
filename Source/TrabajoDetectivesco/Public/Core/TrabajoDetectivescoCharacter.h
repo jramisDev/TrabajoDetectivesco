@@ -43,14 +43,13 @@ class ATrabajoDetectivescoCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
-
-
-
 	
 	//Inspect variables
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = InspectView, meta = (AllowPrivateAccess = "true"))
-	USceneComponent* PointToInspect;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = InspectView, meta = (AllowPrivateAccess = "true"))
+	FVector PointToInspect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = InspectView, meta = (AllowPrivateAccess = "true"))
+	float DistanceInspect = 500.f;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=InspectView, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* InspectAction;
@@ -91,9 +90,6 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
-
-
-
 	
 	void ThrowInspectMode();
 	void RemoveInspectMode();
@@ -109,7 +105,8 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
-	USceneComponent* GetInspectPointComponent() const { return PointToInspect; }
+	//Le sumamos 25 puntos en altura para que quede a la altura de la camara
+	FVector GetLocationInspectPoint() const { return (this->GetActorLocation()+FVector(0.f,0.f,25.f) + this->GetActorForwardVector() * 100.f); } 
 	
 };
 

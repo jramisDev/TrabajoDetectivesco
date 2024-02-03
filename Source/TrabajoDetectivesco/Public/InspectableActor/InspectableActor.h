@@ -16,14 +16,24 @@ public:
 
 	AInspectableActor();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true));
+	FVector GetStartLocation() const { return StartLocation; } 
+
+protected:
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = true));
 	UStaticMeshComponent* MeshComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true));
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = true));
 	UInspectableComponent* InspectableComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true));
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = true));
 	UTweeningComponent* TweeningComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = true));
+	FVector StartLocation;
+
+	virtual void BeginPlay() override;
+	
 
 };
 

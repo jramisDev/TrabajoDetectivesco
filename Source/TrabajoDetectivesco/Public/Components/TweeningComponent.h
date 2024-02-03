@@ -11,16 +11,17 @@ UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class TRABAJODETECTIVESCO_API UTweeningComponent : public UActorComponent
 {
 	GENERATED_BODY()
-
-	TObjectPtr<UTweenerBase> ActiveTweener;
-
-	float TimeLerp = 1.f;
+	
+	const float TimeLerp = 1.f;
 
 public:
 	
+	TObjectPtr<UTweenerBase> ActiveTweener;
+	
 	UFUNCTION(BlueprintCallable)
-	UTweenerBase* StartTween(const FVector& To, float IntTime);
-
-	float GetTimeLerp() const {return TimeLerp;};
+	UTweenerBase* StartTween(const FVector& InTo);
+	
+	UFUNCTION(BlueprintCallable)
+	UTweenerBase* StartTweenFrom(const FVector& InFrom, const FVector& InTo);
 	
 };

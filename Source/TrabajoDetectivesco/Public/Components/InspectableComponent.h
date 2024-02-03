@@ -18,6 +18,7 @@ public:
 	UInspectableComponent();
 
 	void AttachActor(ATrabajoDetectivescoCharacter* InCharacter) const;
+	void DesAttachActor(ATrabajoDetectivescoCharacter* InCharacter) const;
 	void InspectActor(const FInputActionValue& Value) const;
 
 };

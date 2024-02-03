@@ -19,9 +19,22 @@ void UInspectableComponent::AttachActor(ATrabajoDetectivescoCharacter* InCharact
 	if(!TweeningComponent) return;
 
 	if(!InCharacter) return;
-
 	
-	//TweeningComponent->StartTween(InCharacter->GetInspectPointComponent()->GetRelativeLocation(), TweeningComponent->GetTimeLerp());
+	TweeningComponent->StartTween(InCharacter->GetLocationInspectPoint());
+
+}
+
+void UInspectableComponent::DesAttachActor(ATrabajoDetectivescoCharacter* InCharacter) const
+{
+	AInspectableActor* InspectableActor = Cast<AInspectableActor>(GetOwner());
+	if(!InspectableActor) return;
+
+	UTweeningComponent* TweeningComponent = InspectableActor->FindComponentByClass<UTweeningComponent>();
+	if(!TweeningComponent) return;
+
+	if(!InCharacter) return;
+	
+	TweeningComponent->StartTweenFrom(InCharacter->GetLocationInspectPoint(), InspectableActor->GetStartLocation());
 
 }
 

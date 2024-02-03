@@ -6,8 +6,6 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "VectorUtil.h"
-#include "Components/BoxComponent.h"
 #include "Components/InspectableComponent.h"
 #include "InspectableActor/InspectableActor.h"
 
@@ -37,9 +35,6 @@ ATrabajoDetectivescoCharacter::ATrabajoDetectivescoCharacter()
 	Mesh1P->CastShadow = false;
 	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
-
-	PointToInspect = CreateDefaultSubobject<USceneComponent>(TEXT("PointToInspect"));
-	PointToInspect->SetRelativeLocation({90.f,0.f,60.f});
 
 }
 
@@ -75,10 +70,6 @@ void ATrabajoDetectivescoCharacter::SetupPlayerInputComponent(class UInputCompon
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATrabajoDetectivescoCharacter::Look);
-
-
-
-
 		
 		//Inspect
 		EnhancedInputComponent->BindAction(InspectAction, ETriggerEvent::Started, this, &ATrabajoDetectivescoCharacter::InspectActor);
@@ -140,9 +131,6 @@ bool ATrabajoDetectivescoCharacter::GetHasRifle()
 }
 
 
-
-
-
 void ATrabajoDetectivescoCharacter::ThrowInspectMode()
 {
 	FHitResult OutHit;
@@ -159,7 +147,7 @@ void ATrabajoDetectivescoCharacter::ThrowInspectMode()
 	GetWorld()->LineTraceSingleByChannel(
 		OutHit,
 		this->GetActorLocation(),
-		this->GetActorLocation() + this->GetActorForwardVector() * 500.f,
+		this->GetActorLocation() + this->GetActorForwardVector() * DistanceInspect,
 		ECC_Visibility,
 		QueryParams
 		);
@@ -168,7 +156,7 @@ void ATrabajoDetectivescoCharacter::ThrowInspectMode()
 	DrawDebugLine(
 		GetWorld(),
 		this->GetActorLocation(),
-		this->GetActorLocation() + this->GetActorForwardVector() * 500.f,
+		this->GetActorLocation() + this->GetActorForwardVector() * DistanceInspect,
 		FColor::Red,
 		false,
 		2.f		
@@ -190,8 +178,14 @@ void ATrabajoDetectivescoCharacter::ThrowInspectMode()
 
 void ATrabajoDetectivescoCharacter::RemoveInspectMode()
 {
-	InspectableActor = nullptr;
-	AddMappingContext(InspectMappingContext, DefaultMappingContext);
+	if(!InspectableActor) return;
+	
+	if(UInspectableComponent* InspectableComponent = InspectableActor->FindComponentByClass<UInspectableComponent>())
+	{
+		InspectableComponent->DesAttachActor(this);			
+		InspectableActor = nullptr;
+		AddMappingContext(InspectMappingContext, DefaultMappingContext);
+	}		
 }
 
 void ATrabajoDetectivescoCharacter::InspectActor()

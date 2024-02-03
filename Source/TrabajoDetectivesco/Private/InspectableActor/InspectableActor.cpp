@@ -24,4 +24,12 @@ AInspectableActor::AInspectableActor()
 
 	TweeningComponent = CreateDefaultSubobject<UTweeningComponent>(TEXT("TweenerComponent"));
 	
+	
+}
+
+void AInspectableActor::BeginPlay()
+{
+	Super::BeginPlay();
+
+	StartLocation = GetActorLocation();
 }
